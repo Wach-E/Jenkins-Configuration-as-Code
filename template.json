@@ -1,0 +1,30 @@
+{
+    "variables": {
+        "region": "us-west-2",
+        "source_ami": "ami-0892d3c7ee96c0bf7",
+        "instance_type": "t2.micro"
+    },
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "region": "{{user `region`}}",
+            "instance_type": "{{user `instance_type`}}",
+            "source_ami": "{{user `source_ami`}}",
+            "ssh_username": "ubuntu",
+            "ami_name": "jenkins-master-docker-2.204.1",
+            "ami_description": "Amazon Linux Image with Jenkins Server"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "./files",
+            "destination": "/home/ubuntu"
+        },
+        {
+            "type": "shell",
+            "script": "./setup.sh",
+            "execute_command": "sudo -E -S sh '{{ .Path }}'"
+        }
+    ]
+}
